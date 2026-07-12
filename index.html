@@ -10,7 +10,6 @@
         body { font-family: 'Poppins', sans-serif; background-color: #f1f5f9; }
         .bg-navy { background-color: #0B1E36; }
         .text-gold { color: #FFD700; }
-        /* Animasi Panah */
         .bounce-arrow { animation: bounce 2s infinite; }
         @keyframes bounce {
             0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
@@ -26,7 +25,12 @@
         <h1 class="text-xl font-bold tracking-wide">Pendaftaran GRATIS</h1>
     </div>
 
-    <!-- Section 1: Copywriting Pain Point -->
+    <!-- Badge Sponsor (Akan muncul otomatis jika pakai link referral) -->
+    <div id="sponsorBadge" class="hidden bg-yellow-400 text-slate-900 text-center py-2 font-bold text-sm shadow-inner">
+        🤝 Anda diundang oleh Spesialis NPA: <span id="sponsorNameText" class="uppercase"></span>
+    </div>
+
+    <!-- Section 1: Copywriting -->
     <div class="bg-navy text-white text-center px-6 py-10">
         <h2 class="text-gold text-2xl md:text-3xl font-extrabold mb-6 leading-snug">
             "Muda Kaya Raya, Tua Sejahtera: Bukan Sekadar Impian!"
@@ -48,14 +52,14 @@
         </p>
     </div>
 
-    <!-- Section 2: Hero Image (Ganti src dengan hasil gambar AI nanti) -->
-    <div class="w-full bg-navy relative">
-        <!-- Placeholder Gambar: Nanti ganti dengan gambar hasil Veo/Midjourney -->
-        <img src="https://via.placeholder.com/600x400/1e293b/FFD700?text=FOTO+MENTORING+NPA" alt="Muda Kaya Raya Tua Sejahtera" class="w-full object-cover">
+    <!-- Section 2: Hero Image -->
+    <div class="w-full bg-navy relative border-y-4 border-gold">
+        <!-- Pastikan gambar bernama hero.jpg dan ada di folder yang sama -->
+        <img src="hero.jpg" alt="Muda Kaya Raya Tua Sejahtera" class="w-full h-auto object-cover">
     </div>
 
     <!-- Banner Call to Action -->
-    <div class="bg-red-600 text-white text-center py-4 shadow-inner">
+    <div class="bg-red-600 text-white text-center py-4 shadow-inner border-t-2 border-red-400">
         <h2 class="text-xl font-bold">[GRATIS] Daftar Sekarang Juga..</h2>
     </div>
 
@@ -69,74 +73,83 @@
     <!-- Section 3: Form Pendaftaran -->
     <div class="bg-navy px-4 pb-12">
         <div class="bg-[#f0f4f8] rounded-xl p-6 shadow-xl border-t-4 border-blue-600">
-            <h3 class="text-xl font-bold text-blue-800 text-center mb-6">Form Pendaftaran</h3>
+            <h3 class="text-xl font-bold text-blue-800 text-center mb-6">Form Pendaftaran VVIP</h3>
             
             <form id="npaForm" onsubmit="processForm(event)">
-                <!-- Nama -->
                 <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-800 mb-1">Nama</label>
+                    <label class="block text-sm font-bold text-gray-800 mb-1">Nama Lengkap</label>
                     <input type="text" id="formNama" required placeholder="Nama Anda" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
                 </div>
                 
-                <!-- Whatsapp -->
                 <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-800 mb-1">No Whatsapp</label>
-                    <input type="tel" id="formWa" required placeholder="0856XXXXXXX" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
+                    <label class="block text-sm font-bold text-gray-800 mb-1">No WhatsApp Aktif</label>
+                    <input type="tel" id="formWa" required placeholder="Contoh: 081234567890" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
                 </div>
                 
-                <!-- Kota -->
                 <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-800 mb-1">Kota / Kecamatan</label>
-                    <input type="text" id="formKota" required placeholder="Kota / Kecamatan" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
+                    <label class="block text-sm font-bold text-gray-800 mb-1">Kota / Domisili</label>
+                    <input type="text" id="formKota" required placeholder="Contoh: Bandung" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
                 </div>
                 
-                <!-- Usia -->
                 <div class="mb-4">
-                    <label class="block text-sm font-bold text-gray-800 mb-1">Usia Anda</label>
-                    <input type="number" id="formUsia" required placeholder="Usia" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
+                    <label class="block text-sm font-bold text-gray-800 mb-1">Usia Saat Ini</label>
+                    <input type="number" id="formUsia" required placeholder="Contoh: 35" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
                 </div>
                 
-                <!-- Pekerjaan -->
                 <div class="mb-6">
-                    <label class="block text-sm font-bold text-gray-800 mb-1">Pekerjaan/Kegiatan</label>
-                    <input type="text" id="formPekerjaan" required placeholder="Pekerjaan/Kegiatan" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
+                    <label class="block text-sm font-bold text-gray-800 mb-1">Pekerjaan / Aktivitas</label>
+                    <input type="text" id="formPekerjaan" required placeholder="Contoh: Karyawan Swasta" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 text-gray-700">
                 </div>
                 
-                <!-- Tombol Submit -->
                 <button type="submit" class="w-full bg-[#3B8E42] hover:bg-green-700 text-white font-bold py-4 rounded-lg text-lg flex justify-center items-center gap-2 shadow-lg transition transform active:scale-95">
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                     DAFTAR SEKARANG
                 </button>
             </form>
-            <p class="text-center text-xs text-gray-500 mt-4">Data Anda 100% aman dan dirahasiakan.</p>
+            <p class="text-center text-xs text-gray-500 mt-4">Data Anda 100% aman dan hanya digunakan untuk keperluan pendaftaran.</p>
         </div>
     </div>
 
     <script>
+        // --- SISTEM REFERRAL CERDAS ---
+        
+        // 1. Nomor WA Pusat (GANTI DENGAN NOMOR WA BAPAK - pakai 62)
+        const waPusat = "6285218453131"; 
+        
+        // 2. Baca URL Parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        let targetWa = urlParams.get('wa');
+        let sponsorName = urlParams.get('sponsor');
+
+        // 3. Logika Penentuan Target WA
+        // Jika di link tidak ada nomor WA, maka otomatis masuk ke WA Pusat (Bapak)
+        if (!targetWa) {
+            targetWa = waPusat;
+        }
+
+        // 4. Jika ada nama sponsor di link, tampilkan badge kuning di atas
+        if (sponsorName) {
+            document.getElementById('sponsorBadge').classList.remove('hidden');
+            // Ganti %20 atau + menjadi spasi agar rapi
+            document.getElementById('sponsorNameText').innerText = decodeURIComponent(sponsorName).replace(/\+/g, ' ');
+        }
+
+        // --- FUNGSI PROSES FORM ---
         function processForm(event) {
-            event.preventDefault(); // Mencegah reload halaman
+            event.preventDefault(); 
             
-            // Ambil data dari form
             const nama = document.getElementById('formNama').value;
             const wa = document.getElementById('formWa').value;
             const kota = document.getElementById('formKota').value;
             const usia = document.getElementById('formUsia').value;
             const kerja = document.getElementById('formPekerjaan').value;
-
-            // STRATEGI 1: Kirim data ke WA Admin (Bapak) dulu biar punya database
-            // Ganti 628XXXXX dengan nomor WA Bapak
-            const nomorAdmin = "6281234567890"; 
             
-            const teksPesan = `Halo Admin NPA,%0A%0ASaya ingin daftar masuk ke kolam prospek VVIP.%0A%0A*Nama:* ${nama}%0A*No WA:* ${wa}%0A*Kota:* ${kota}%0A*Usia:* ${usia} tahun%0A*Kegiatan:* ${kerja}%0A%0AMohon link Grup WA nya ya, terima kasih.`;
+            // Format Pesan
+            const teksPesan = `Halo Admin NPA Smart System,%0A%0ASaya sudah mengisi form pendaftaran di Website. Berikut data saya:%0A%0A*Nama:* ${nama}%0A*No WA:* ${wa}%0A*Kota:* ${kota}%0A*Usia:* ${usia} tahun%0A*Kegiatan:* ${kerja}%0A%0ASaya sudah SAVE NOMOR INI. Mohon berikan akses link masuk ke Grup VVIP nya ya kak. Terima kasih! 🙏`;
             
-            const urlWA = `https://wa.me/${nomorAdmin}?text=${teksPesan}`;
-            
-            // Buka WhatsApp
+            // Arahkan ke WhatsApp yang sudah ditentukan oleh sistem Referral
+            const urlWA = `https://wa.me/${targetWa}?text=${teksPesan}`;
             window.location.href = urlWA;
-
-            // CATATAN: Kalau Bapak mau tombol ini LANGSUNG buka link invite Grup WA 
-            // (Tanpa nge-chat admin), hapus kode di atas dan gunakan kode ini:
-            // window.location.href = "https://chat.whatsapp.com/ID_GRUP_BAPAK_DISINI";
         }
     </script>
 </body>
