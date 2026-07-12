@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NPA Link Builder - Mesin Referral</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        darkblue: '#001f3f',
+                        navy: '#003366',
+                        cyan: '#00b4d8',
+                        ocean: '#0077b6',
+                        gold: '#FFD700',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { background: linear-gradient(135deg, #001f3f, #003366); background-attachment: fixed; color: white; font-family: 'Poppins', sans-serif; }
+        .glass-panel { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-8 flex flex-col items-center">
+
+    <div class="w-full max-w-2xl">
+        <!-- Header -->
+        <div class="text-center mb-8 mt-4">
+            <h1 class="text-3xl md:text-4xl font-bold text-gold mb-2">🔗 NPA Link Builder</h1>
+            <p class="text-gray-300 opacity-90 text-sm md:text-base">Mesin Pencetak Link Referral Landing Page Khusus Admin.</p>
+        </div>
+
+        <!-- Panel Input -->
+        <div class="glass-panel rounded-2xl p-6 md:p-8 mb-8 shadow-2xl">
+            <h2 class="text-xl font-bold text-cyan mb-6 border-b border-gray-600 pb-2">1. Data Mitra NPA</h2>
+            
+            <div class="space-y-5">
+                <!-- Alamat Web Utama -->
+                <div>
+                    <label class="block text-sm font-semibold mb-2 text-gray-300">URL Landing Page Utama (Biarkan jika tidak berubah)</label>
+                    <input type="text" id="baseUrl" value="https://eborn.github.io/lp-npa.html" class="w-full p-3 rounded-xl bg-navy bg-opacity-50 border border-gray-600 focus:border-gold focus:outline-none focus:ring-1 focus:ring-gold text-white text-sm" readonly>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <!-- Nama Mitra -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-cyan">Nama Mitra</label>
+                        <input type="text" id="mitraName" placeholder="Contoh: Yandi Imanuel" class="w-full p-3 rounded-xl bg-darkblue bg-opacity-70 border border-gray-500 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan text-white capitalize transition">
+                    </div>
+                    
+                    <!-- WA Mitra -->
+                    <div>
+                        <label class="block text-sm font-semibold mb-2 text-cyan">No WhatsApp Mitra</label>
+                        <input type="tel" id="mitraWa" placeholder="Contoh: 0812345678" class="w-full p-3 rounded-xl bg-darkblue bg-opacity-70 border border-gray-500 focus:border-cyan focus:outline-none focus:ring-1 focus:ring-cyan text-white transition">
+                        <p class="text-[10px] text-gray-400 mt-1">*Awali dengan 08 atau 62</p>
+                    </div>
+                </div>
+            </div>
+            
+            <button onclick="generateLink()" class="mt-8 w-full bg-gradient-to-r from-cyan to-ocean hover:scale-[1.02] transform transition-all duration-200 text-white font-bold py-4 rounded-xl shadow-[0_4px_15px_rgba(0,180,216,0.3)] flex justify-center items-center gap-2 text-lg">
+                <span>⚙️ Generate Link Sekarang</span>
+            </button>
+        </div>
+
+        <!-- Panel Hasil (Awalnya disembunyikan) -->
+        <div id="resultContainer" class="hidden glass-panel rounded-2xl p-6 md:p-8 shadow-2xl border-l-4 border-l-green-400">
+            <h2 class="text-xl font-bold text-green-400 mb-4 flex items-center gap-2"><span>✅</span> Link Berhasil Dibuat!</h2>
+            
+            <div class="bg-darkblue p-4 rounded-xl border border-gray-600 mb-6 relative group break-all">
+                <p id="generatedLink" class="text-gray-100 font-mono text-sm md:text-base"></p>
+                <button onclick="copyToClipboard()" id="copyBtn" class="absolute top-2 right-2 bg-gray-700 hover:bg-green-500 text-white text-xs py-1 px-3 rounded transition-colors shadow-lg">Copy</button>
+            </div>
+
+            <!-- Pesan WA Preview -->
+            <div class="mb-6">
+                <label class="block text-sm font-semibold mb-2 text-gray-400">Preview Pesan yang akan dikirim ke mitra:</label>
+                <div class="bg-navy bg-opacity-50 p-4 rounded-xl border border-gray-600 text-sm text-gray-300 whitespace-pre-line" id="waMessagePreview">
+                </div>
+            </div>
+
+            <!-- Tombol Kirim WA -->
+            <button onclick="sendToWhatsApp()" class="w-full bg-[#25D366] hover:bg-green-600 transform transition-all hover:scale-[1.02] text-white font-bold py-4 rounded-xl shadow-lg flex justify-center items-center gap-2 text-lg">
+                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                Kirim Langsung ke WA Mitra
+            </button>
+        </div>
+
+        <div class="text-center mt-10 mb-6">
+            <a href="index.html" class="text-gray-400 hover:text-white transition-colors text-sm font-medium">← Kembali ke Menu Utama</a>
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk membersihkan dan memformat nomor WA ke awalan 62
+        function formatWaNumber(wa) {
+            let cleaned = wa.replace(/\D/g, ''); // Hapus semua selain angka
+            if (cleaned.startsWith('0')) {
+                cleaned = '62' + cleaned.substring(1);
+            } else if (cleaned.startsWith('8')) {
+                cleaned = '62' + cleaned;
+            }
+            return cleaned;
+        }
+
+        function generateLink() {
+            const baseUrl = document.getElementById('baseUrl').value;
+            const rawName = document.getElementById('mitraName').value.trim();
+            const rawWa = document.getElementById('mitraWa').value.trim();
+
+            if (!rawName || !rawWa) {
+                alert("Mohon lengkapi Nama dan No WhatsApp Mitra terlebih dahulu!");
+                return;
+            }
+
+            const cleanWa = formatWaNumber(rawWa);
+            // encodeURIComponent agar spasi di nama menjadi aman di URL (misal: Yandi%20Imanuel)
+            const encodedName = encodeURIComponent(rawName);
+
+            // Merakit URL final
+            const finalLink = `${baseUrl}?wa=${cleanWa}&sponsor=${encodedName}`;
+            
+            document.getElementById('generatedLink').innerText = finalLink;
+
+            // Meracik Pesan WA untuk dikirim ke mitra
+            const waMessage = `Halo ${rawName}! 🎉\n\nSelamat, ini adalah Link Landing Page khusus untuk kamu sebar ke calon prospek:\n\n👉 ${finalLink}\n\nSilakan sebar link ini di Facebook/Sosmed kamu. Nanti kalau ada prospek yang daftar, datanya akan OTOMATIS masuk ke WhatsApp kamu ini.\n\nSemangat panen closing bersama NPA Smart System! 🚀🔥`;
+            
+            document.getElementById('waMessagePreview').innerText = waMessage;
+
+            // Tampilkan hasil
+            document.getElementById('resultContainer').classList.remove('hidden');
+        }
+
+        function copyToClipboard() {
+            const textToCopy = document.getElementById('generatedLink').innerText;
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerText;
+                btn.innerText = "Copied!";
+                btn.classList.add("bg-green-500");
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.remove("bg-green-500");
+                }, 2000);
+            });
+        }
+
+        function sendToWhatsApp() {
+            const rawWa = document.getElementById('mitraWa').value.trim();
+            const cleanWa = formatWaNumber(rawWa);
+            const waMessage = document.getElementById('waMessagePreview').innerText;
+            
+            // Encode pesan agar format baris baru terbaca di URL WhatsApp
+            const encodedMessage = encodeURIComponent(waMessage);
+            const urlWA = `https://wa.me/${cleanWa}?text=${encodedMessage}`;
+            
+            // Buka di tab baru / aplikasi WhatsApp
+            window.open(urlWA, '_blank');
+        }
+    </script>
+</body>
+</html>
